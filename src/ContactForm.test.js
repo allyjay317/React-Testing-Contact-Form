@@ -16,10 +16,12 @@ const fillForm = (component) =>{
     const lastNameField = rendered.getByTestId('lastName')
     const emailField = rendered.getByTestId('email')
     const messageField = rendered.getByTestId('message')
+    const reasonField = rendered.getByTestId('reason')
     typeAndExpect(firstNameField, 'Allison')
     typeAndExpect(lastNameField, 'Usher')
     typeAndExpect(emailField, 'test@email.com')
     typeAndExpect(messageField, 'This is a test message')
+    typeAndExpect(reasonField, 'technical')
     return rendered
 }
 
@@ -44,12 +46,7 @@ test('can submit form', async () =>{
         
     })
     .then((results) =>{
-        expect(results).toHaveTextContent(JSON.stringify({
-            firstName: 'Allison',
-            lastName: 'Usher',
-            email: 'test@email.com',
-            message: 'This is a test message',
-            reason: 'technical'
-        }))
+        expect(results).toHaveTextContent(/{ "firstName": "Allison", "lastName": "Usher", "email": "test@email.com", "message": "This is a test message", "reason": "technical", "id": "\d+", "createdAt": "[\s\S]+" }/i)
+        
     })
 })

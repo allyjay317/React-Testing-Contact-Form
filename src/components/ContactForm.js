@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import Axios from 'axios'
 
 const ContactForm = () => {
   const [data, setData] = useState();
+  const [post, setPost] = useState();
   const { register, errors, handleSubmit } = useForm({
     mode: "onBlur",
   });
   const onSubmit = (data) => {
     setData(data);
   };
+
+  useEffect(() =>{
+    if(data){
+    Axios.post('https://reqres.in/api/users', data)
+      .then(data =>{
+        setPost(data.data)
+      })
+    }
+  }, [data])
 
   return (
     <div className="App">
@@ -59,9 +70,9 @@ const ContactForm = () => {
             <option value='technical'>Technical</option>
           </select>
         </div>
-        {data && (
+        {post && (
           <pre data-testid='results' style={{ textAlign: "left", color: "white" }}>
-            {JSON.stringify(data, null, 2)}
+            {JSON.stringify(post, null, 2)}
           </pre>
         )}
         <input type="submit" data-testid='submitButton' />
